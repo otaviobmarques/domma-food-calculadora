@@ -1,5 +1,7 @@
 # Calculadora iFood · Domma Food
 
+**No ar:** https://domma-calculadora-ifood-redbox6.vercel.app · Supabase `domma-calculadora-ifood` (sa-east-1) · Vercel `domma-calculadora-ifood` (REDBOX)
+
 PWA (Next.js + Supabase) que calcula quanto cobrar em cada item no iFood, Keeta, 99Food e aiqfome.
 
 ## Rodar local
@@ -42,7 +44,8 @@ a outra aba recebe a atualização sozinha.
    ```sql
    update public.profiles set is_admin = true where id = (select id from auth.users where email = 'seu@email.com');
    ```
-4. Na Vercel, configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET` (e opcional `TEAM_ALERT_WEBHOOK_URL`) e faça o deploy.
+4. Na Vercel, configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `CRON_SECRET` (e opcional `TEAM_ALERT_WEBHOOK_URL`) e faça o deploy.
+   O hash SHA-256 do `CRON_SECRET` fica em `private.app_config` (chave `cron_secret_sha256`); as funções `get_fee_sources` e `record_source_check` só aceitam admin logado ou esse segredo. Não é preciso a chave service role.
 
 > Os links de fonte de Keeta, 99Food e aiqfome na tabela inicial apontam para a página inicial dos veículos citados no descritivo. Troque pelos links exatos das matérias no painel.
 
