@@ -4,13 +4,13 @@ import { AppProvider } from "@/components/AppProvider";
 import { SwRegister } from "@/components/SwRegister";
 
 export const metadata: Metadata = {
-  title: "Domma Calculadora iFood",
+  title: "Calculadora iFood · Domma Food",
   description: "Preço certo no iFood, sem prejuízo. Compare iFood, Keeta, 99Food e aiqfome.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/icon.svg", apple: "/icon.svg" },
   appleWebApp: { capable: true, title: "Calculadora", statusBarStyle: "default" },
 };
-export const viewport: Viewport = { themeColor: "#D0202E", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#EA1D2C", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

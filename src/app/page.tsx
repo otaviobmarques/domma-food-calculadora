@@ -17,7 +17,7 @@ function Home() {
     <>
       <header className="row between">
         <div className="row">
-          <Logo size={24} />
+          <Logo size={30} />
           <div style={{ lineHeight: 1.15 }}>
             <div className="eyebrow">Calculadora iFood</div>
             <div className="small muted">Olá, {profile?.restaurant_name || "restaurante"}</div>

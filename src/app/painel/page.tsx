@@ -142,7 +142,7 @@ function Panel() {
   return (
     <div className="panel">
       <aside>
-        <div className="brand"><Logo size={18} /><span className="tiny" style={{ color: "var(--red)", fontWeight: 900 }}>PAINEL</span></div>
+        <div className="brand"><Logo size={34} dark /><span className="tiny" style={{ color: "#fff", opacity: .7, fontWeight: 800, letterSpacing: 2 }}>PAINEL INTERNO</span></div>
         <a className="on" href="#taxas">Taxas dos apps</a>
         <a href="#historico">Histórico</a>
         <Link href="/">Abrir app do cliente</Link>

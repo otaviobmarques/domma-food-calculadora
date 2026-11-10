@@ -1,6 +1,6 @@
 :root {
-  --red: #d0202e; --red-dark: #a91622; --red-soft: #fdeced;
-  --ink: #1f1f24; --muted: #6b6b76; --line: #e7e7ea; --bg: #f5f5f7; --card: #fff;
+  --red: #ea1d2c; --red-dark: #c11420; --red-soft: #fdecee; --navy: #1e1033; --navy-soft: #efedf4;
+  --ink: #1e1033; --muted: #6b6b76; --line: #e7e7ea; --bg: #f5f5f7; --card: #fff;
   --green: #1d8a45; --green-soft: #e6f5ea; --amber: #9a6400; --amber-soft: #fff4dc;
   --radius: 16px;
   font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -111,7 +111,7 @@ label.field { display: flex; flex-direction: column; gap: 6px; font-weight: 700;
 .bottom-nav a.active { color: var(--red); }
 
 .disclaimer { text-align: center; color: #9a9aa3; font-size: 11px; margin: 8px 0 0; }
-.toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #1f1f24; color: #fff; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; width: calc(100% - 32px); max-width: 440px; z-index: 30; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; width: calc(100% - 32px); max-width: 440px; z-index: 30; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
 
 .modal-bg { position: fixed; inset: 0; background: rgba(20,20,30,.45); display: grid; place-items: end center; z-index: 40; }
 .modal { background: #fff; width: 100%; max-width: 480px; border-radius: 22px 22px 0 0; padding: 22px 18px 18px; display: flex; flex-direction: column; gap: 10px; max-height: 90dvh; overflow: auto; }
@@ -124,14 +124,14 @@ label.field { display: flex; flex-direction: column; gap: 6px; font-weight: 700;
 .auth h1 { font-size: 32px; font-weight: 900; line-height: 1.05; }
 .divider { text-align: center; color: var(--muted); font-size: 12px; }
 .error { background: var(--red-soft); color: var(--red-dark); border-radius: 10px; padding: 10px 12px; font-size: 13px; font-weight: 700; }
-.demo-flag { background: #ede9ff; color: #4a32c7; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; }
+.demo-flag { background: var(--navy-soft); color: var(--navy); border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; }
 
 /* Painel Domma (desktop) */
 .panel { display: grid; grid-template-columns: 220px 1fr; min-height: 100dvh; background: var(--bg); }
-.panel aside { background: var(--red); color: #fff; padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; }
-.panel aside .brand { background: #fff; border-radius: 10px; padding: 8px 10px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+.panel aside { background: var(--navy); color: #fff; padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; }
+.panel aside .brand { padding: 4px 6px 14px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.12); display: flex; flex-direction: column; gap: 6px; }
 .panel aside a { color: #fff; text-decoration: none; padding: 9px 12px; border-radius: 8px; font-weight: 700; font-size: 14px; opacity: .85; }
-.panel aside a.on { background: #fff; color: var(--red); opacity: 1; }
+.panel aside a.on { background: var(--red); color: #fff; opacity: 1; }
 .panel main { padding: 28px; display: flex; flex-direction: column; gap: 18px; max-width: 1100px; }
 .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .kpis .card b { font-size: 24px; font-weight: 900; display: block; }

@@ -58,7 +58,7 @@ function Calculator() {
       <div className="redtop">
         <div className="row between">
           <div><h1>Calculadora</h1><div className="small">Compare o preço em cada app</div></div>
-          <span style={{ background: "#fff", borderRadius: 999, padding: "4px 10px" }}><Logo size={16} /></span>
+          <span style={{ background: "#fff", borderRadius: 999, padding: "5px 12px" }}><Logo size={20} /></span>
         </div>
       </div>
       <section className="card pull-up" style={{ display: "flex", flexDirection: "column", gap: 12 }}>

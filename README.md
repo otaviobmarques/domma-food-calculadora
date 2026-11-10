@@ -1,4 +1,4 @@
-# Domma Calculadora iFood
+# Calculadora iFood · Domma Food
 
 PWA (Next.js + Supabase) que calcula quanto cobrar em cada item no iFood, Keeta, 99Food e aiqfome.
 
