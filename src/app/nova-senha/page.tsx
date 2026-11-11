@@ -12,7 +12,7 @@ export default function NewPasswordPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault(); setError("");
     if (password.length < 6) return setError("A senha precisa ter pelo menos 6 caracteres.");
-    try { await store.updatePassword(password); router.replace("/"); } catch (err) { setError((err as Error).message); }
+    try { await store.updatePassword(password); router.replace("/inicio"); } catch (err) { setError((err as Error).message); }
   };
   return (
     <AuthLayout>

@@ -2,7 +2,7 @@
   "name": "Calculadora iFood · Domma Food",
   "short_name": "Calculadora",
   "description": "Preço certo no iFood, sem prejuízo.",
-  "start_url": "/",
+  "start_url": "/inicio",
   "display": "standalone",
   "background_color": "#f6f6f7",
   "theme_color": "#EA1D2C",

@@ -136,7 +136,7 @@ function Panel() {
 
   if (!ready || !profile || (profile.is_admin && !versions.length)) return <div className="screen center"><div className="spinner" /></div>;
   if (!profile.is_admin) return (
-    <div className="auth"><Logo /><h1>Acesso restrito</h1><p className="muted">O painel é só para a equipe Domma.</p><Link href="/" className="btn primary">Voltar</Link></div>
+    <div className="auth"><Logo /><h1>Acesso restrito</h1><p className="muted">O painel é só para a equipe Domma.</p><Link href="/inicio" className="btn primary">Voltar</Link></div>
   );
 
   const ifood = currentByApp.ifood;
@@ -148,7 +148,7 @@ function Panel() {
         <div className="brand"><Logo size={34} dark /><span className="tiny" style={{ color: "#fff", opacity: .7, fontWeight: 800, letterSpacing: 2 }}>PAINEL INTERNO</span></div>
         <a className={tab === "taxas" ? "on" : ""} href="#taxas" onClick={() => setTab("taxas")}>Taxas dos apps</a>
         <a className={tab === "clientes" ? "on" : ""} href="#clientes" onClick={() => setTab("clientes")}>Clientes</a>
-        <Link href="/">Abrir app do cliente</Link>
+        <Link href="/inicio">Abrir app do cliente</Link>
       </aside>
       <main>
         {tab === "clientes" ? <PanelClients /> : (<>

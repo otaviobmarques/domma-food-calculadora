@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  useEffect(() => { if (user) router.replace("/"); }, [user, router]);
+  useEffect(() => { if (user) router.replace("/inicio"); }, [user, router]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

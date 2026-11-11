@@ -46,13 +46,13 @@ export function createSupabaseStore(url: string, anonKey: string): Store {
     },
     async signUp(restaurant, email, password) {
       const { data, error } = await sb.auth.signUp({
-        email, password, options: { data: { restaurant_name: restaurant }, emailRedirectTo: `${location.origin}/` },
+        email, password, options: { data: { restaurant_name: restaurant }, emailRedirectTo: `${location.origin}/inicio` },
       });
       if (error) throw new Error(error.message);
       return { needsConfirmation: !data.session };
     },
     async signInWithGoogle() {
-      const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/` } });
+      const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/inicio` } });
       if (error) throw new Error(error.message);
     },
     async resetPassword(email) {
