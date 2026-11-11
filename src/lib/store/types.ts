@@ -1,4 +1,4 @@
-import type { AdminStats, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
+import type { AdminStats, AdminUser, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
 
 export interface AuthUser { id: string; email: string }
 
@@ -11,6 +11,8 @@ export interface Store {
   signInWithGoogle(): Promise<void>;
   resetPassword(email: string): Promise<void>;
   updatePassword(password: string): Promise<void>;
+  /** Link de acesso: define a senha e devolve o e-mail para entrar. */
+  redeemAccessLink(token: string, password: string): Promise<string>;
   signOut(): Promise<void>;
 
   getProfile(): Promise<Profile>;
@@ -33,5 +35,12 @@ export interface Store {
     deleteVersion(id: string): Promise<void>;
     stats(): Promise<AdminStats>;
     checkSources(): Promise<SourceCheck[]>;
+    listUsers(): Promise<AdminUser[]>;
+    createUser(email: string, restaurant: string, isAdmin: boolean): Promise<string>;
+    setBlocked(id: string, blocked: boolean): Promise<void>;
+    setAdmin(id: string, isAdmin: boolean): Promise<void>;
+    deleteUser(id: string): Promise<void>;
+    /** Gera um link de uso único (token) para o usuário criar a senha e entrar. */
+    createAccessLink(id: string, hours?: number): Promise<string>;
   };
 }

@@ -137,6 +137,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       try {
         const [p, list, its] = await Promise.all([store.getProfile(), store.listPublishedFees(), store.listItems()]);
         if (!alive) return;
+        if (p.blocked) { await store.signOut(); showToast("Acesso bloqueado. Fale com a Domma Food."); return; }
         publishedRef.current = list;
         setPublished(list);
         setItems(its);

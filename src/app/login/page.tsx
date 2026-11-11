@@ -4,9 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useApp } from "@/components/AppProvider";
 import { AuthLayout } from "@/components/AuthLayout";
-
-// Usuário sem "@" (ex.: "Admin") vira um e-mail interno, porque o Supabase exige e-mail.
-const toEmail = (v: string) => (v.includes("@") ? v : `${v.toLowerCase()}@dommafood.local`);
+import { toEmail } from "@/lib/login";
 
 export default function LoginPage() {
   const { store, user } = useApp();

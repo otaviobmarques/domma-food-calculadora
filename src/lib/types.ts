@@ -49,6 +49,7 @@ export interface Profile {
   plan_choice: Partial<Record<AppId, string>>;
   custom_fees: Partial<Record<AppId, CustomFee>>;
   ack_versions: Partial<Record<AppId, string>>;
+  blocked?: boolean;
 }
 
 export interface MenuItem {
@@ -69,6 +70,19 @@ export interface SourceCheck {
   changed: boolean;
   error?: string | null;
   checked_at: string;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  restaurant_name: string;
+  is_admin: boolean;
+  blocked: boolean;
+  created_at: string;
+  last_sign_in_at: string | null;
+  items_count: number;
+  custom_fees: boolean;
+  has_password: boolean;
 }
 
 export interface AdminStats {

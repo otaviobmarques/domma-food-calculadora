@@ -1,6 +1,6 @@
 "use client";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { AdminStats, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
+import type { AdminStats, AdminUser, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
 import type { AuthUser, Store } from "./types";
 
 const num = (v: unknown) => (v == null ? null : Number(v));
@@ -35,7 +35,14 @@ export function createSupabaseStore(url: string, anonKey: string): Store {
     },
     async signIn(email, password) {
       const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) throw new Error(error.message === "Invalid login credentials" ? "E-mail ou senha incorretos." : error.message);
+      if (error) {
+        if (error.message === "Invalid login credentials") throw new Error("E-mail ou senha incorretos.");
+        if (/banned/i.test(error.message)) throw new Error("Acesso bloqueado. Fale com a Domma Food.");
+        throw new Error(error.message);
+      }
+    },
+    async redeemAccessLink(token, password) {
+      return must(await sb.rpc("redeem_access_link", { p_token: token, p_password: password })) as string;
     },
     async signUp(restaurant, email, password) {
       const { data, error } = await sb.auth.signUp({
@@ -111,6 +118,18 @@ export function createSupabaseStore(url: string, anonKey: string): Store {
       async publishVersion(id) { must(await sb.from("fee_versions").update({ status: "published" }).eq("id", id)); },
       async deleteVersion(id) { must(await sb.from("fee_versions").delete().eq("id", id)); },
       async stats() { return must(await sb.rpc("admin_stats")) as AdminStats; },
+      async listUsers() {
+        return (must(await sb.rpc("admin_list_users")) as AdminUser[]).map((u) => ({ ...u, items_count: Number(u.items_count) }));
+      },
+      async createUser(email, restaurant, isAdmin) {
+        return must(await sb.rpc("admin_create_user", { p_email: email, p_restaurant: restaurant, p_is_admin: isAdmin })) as string;
+      },
+      async setBlocked(id, blocked) { must(await sb.rpc("admin_set_blocked", { p_user: id, p_blocked: blocked })); },
+      async setAdmin(id, isAdmin) { must(await sb.rpc("admin_set_admin", { p_user: id, p_is_admin: isAdmin })); },
+      async deleteUser(id) { must(await sb.rpc("admin_delete_user", { p_user: id })); },
+      async createAccessLink(id, hours = 72) {
+        return must(await sb.rpc("admin_create_access_link", { p_user: id, p_hours: hours })) as string;
+      },
       async checkSources() {
         const { data } = await sb.auth.getSession();
         const res = await fetch("/api/check-sources", { method: "POST", headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}` } });

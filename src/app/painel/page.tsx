@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useApp } from "@/components/AppProvider";
 import { Logo } from "@/components/Logo";
 import { Toast } from "@/components/AppShell";
+import { PanelClients } from "@/components/PanelClients";
 import { diffVersions, pickCurrent } from "@/lib/fees";
 import { dateBR, dateTimeBR, money, parseNum, pct } from "@/lib/format";
 import { APPS, appName, type AdminStats, type AppId, type FeeKind, type FeePlan, type FeeVersion } from "@/lib/types";
@@ -26,6 +27,8 @@ function Panel() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [checking, setChecking] = useState(false);
   const [checkMsg, setCheckMsg] = useState("");
+  const [tab, setTab] = useState<"taxas" | "clientes">("taxas");
+  useEffect(() => { if (location.hash === "#clientes") setTab("clientes"); }, []);
 
   // formulário
   const [editId, setEditId] = useState<string | undefined>();
@@ -143,11 +146,12 @@ function Panel() {
     <div className="panel">
       <aside>
         <div className="brand"><Logo size={34} dark /><span className="tiny" style={{ color: "#fff", opacity: .7, fontWeight: 800, letterSpacing: 2 }}>PAINEL INTERNO</span></div>
-        <a className="on" href="#taxas">Taxas dos apps</a>
-        <a href="#historico">Histórico</a>
+        <a className={tab === "taxas" ? "on" : ""} href="#taxas" onClick={() => setTab("taxas")}>Taxas dos apps</a>
+        <a className={tab === "clientes" ? "on" : ""} href="#clientes" onClick={() => setTab("clientes")}>Clientes</a>
         <Link href="/">Abrir app do cliente</Link>
       </aside>
       <main>
+        {tab === "clientes" ? <PanelClients /> : (<>
         <div className="row between wrap" id="taxas">
           <div>
             <div className="eyebrow">Calculadora iFood</div>
@@ -259,6 +263,7 @@ function Panel() {
             })}</tbody>
           </table></div>
         </section>
+        </>)}
       </main>
       <Toast />
     </div>

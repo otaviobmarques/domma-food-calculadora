@@ -1,11 +1,11 @@
 "use client";
 import { SEED_VERSIONS } from "../fees";
-import type { AdminStats, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
+import type { AdminStats, AdminUser, FeeVersion, MenuItem, Profile, SourceCheck } from "../types";
 import type { AuthUser, Store } from "./types";
 
 // Modo demonstração: tudo no navegador. A "tabela central" é compartilhada entre abas
 // (BroadcastChannel + evento storage), simulando a atualização automática do Supabase Realtime.
-const K = { fees: "domma.demo.fees", user: "domma.demo.user", profile: "domma.demo.profile", items: "domma.demo.items", checks: "domma.demo.checks" };
+const K = { users: "domma.demo.users", tokens: "domma.demo.tokens", fees: "domma.demo.fees", user: "domma.demo.user", profile: "domma.demo.profile", items: "domma.demo.items", checks: "domma.demo.checks" };
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
 
 function read<T>(key: string, fallback: T): T {
@@ -83,6 +83,18 @@ export function createDemoStore(): Store {
     async signInWithGoogle() { await this.signIn("demo@google.com", ""); },
     async resetPassword() { /* demo */ },
     async updatePassword() { /* demo */ },
+    async redeemAccessLink(token) {
+      const tokens = read<Record<string, string>>(K.tokens, {});
+      const id = tokens[token];
+      if (!id) throw new Error("Link inválido ou expirado. Peça um novo link.");
+      delete tokens[token]; write(K.tokens, tokens);
+      const users = read<AdminUser[]>(K.users, []);
+      const u = users.find((x) => x.id === id);
+      if (!u) throw new Error("Link inválido ou expirado. Peça um novo link.");
+      if (u.blocked) throw new Error("Acesso bloqueado. Fale com a Domma Food.");
+      write(K.users, users.map((x) => (x.id === id ? { ...x, has_password: true } : x)));
+      return u.email;
+    },
     async signOut() { localStorage.removeItem(K.user); emitAuth(); },
 
     async getProfile() { return profile(); },
@@ -139,6 +151,37 @@ export function createDemoStore(): Store {
         const custom = Object.values(p.custom_fees).some((c) => c?.enabled) ? 1 : 0;
         const checks = read<SourceCheck[]>(K.checks, []);
         return { client_count: 1, custom_count: custom, last_check: checks[0] ?? null };
+      },
+      async listUsers() {
+        const me = read<AuthUser | null>(K.user, null);
+        const users = read<AdminUser[]>(K.users, []);
+        const self: AdminUser = { id: "demo", email: me?.email ?? "demo", restaurant_name: profile().restaurant_name, is_admin: true, blocked: false,
+          created_at: new Date().toISOString(), last_sign_in_at: new Date().toISOString(), items_count: read<MenuItem[]>(K.items, []).length,
+          custom_fees: Object.values(profile().custom_fees).some((c) => c?.enabled), has_password: true };
+        return [self, ...users];
+      },
+      async createUser(email, restaurant, isAdmin) {
+        const users = read<AdminUser[]>(K.users, []);
+        if (users.some((u) => u.email === email.toLowerCase())) throw new Error("Já existe um usuário com este e-mail");
+        const u: AdminUser = { id: uid(), email: email.toLowerCase(), restaurant_name: restaurant, is_admin: isAdmin, blocked: false,
+          created_at: new Date().toISOString(), last_sign_in_at: null, items_count: 0, custom_fees: false, has_password: false };
+        write(K.users, [u, ...users]);
+        return u.id;
+      },
+      async setBlocked(id, blocked) {
+        if (id === "demo") throw new Error("Você não pode bloquear a própria conta");
+        write(K.users, read<AdminUser[]>(K.users, []).map((u) => (u.id === id ? { ...u, blocked } : u)));
+      },
+      async setAdmin(id, isAdmin) { write(K.users, read<AdminUser[]>(K.users, []).map((u) => (u.id === id ? { ...u, is_admin: isAdmin } : u))); },
+      async deleteUser(id) {
+        if (id === "demo") throw new Error("Você não pode excluir a própria conta");
+        write(K.users, read<AdminUser[]>(K.users, []).filter((u) => u.id !== id));
+      },
+      async createAccessLink(id) {
+        const t = uid().replace(/-/g, "");
+        const tokens = Object.fromEntries(Object.entries(read<Record<string, string>>(K.tokens, {})).filter(([, v]) => v !== id));
+        write(K.tokens, { ...tokens, [t]: id });
+        return t;
       },
       async checkSources() {
         const c: SourceCheck = {
