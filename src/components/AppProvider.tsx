@@ -132,6 +132,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!user) { setProfile(null); setItems([]); return; }
     let alive = true;
+    setReady(false); // segura as telas até o perfil e as taxas chegarem
     (async () => {
       try {
         const [p, list, its] = await Promise.all([store.getProfile(), store.listPublishedFees(), store.listItems()]);

@@ -131,7 +131,7 @@ function Panel() {
     } catch (e) { setCheckMsg((e as Error).message); } finally { setChecking(false); }
   };
 
-  if (!ready || !profile) return <div className="screen center"><div className="spinner" /></div>;
+  if (!ready || !profile || (profile.is_admin && !versions.length)) return <div className="screen center"><div className="spinner" /></div>;
   if (!profile.is_admin) return (
     <div className="auth"><Logo /><h1>Acesso restrito</h1><p className="muted">O painel é só para a equipe Domma.</p><Link href="/" className="btn primary">Voltar</Link></div>
   );

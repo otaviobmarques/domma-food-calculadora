@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { useApp } from "@/components/AppProvider";
 import { AuthLayout } from "@/components/AuthLayout";
 
+// Usuário sem "@" (ex.: "Admin") vira um e-mail interno, porque o Supabase exige e-mail.
+const toEmail = (v: string) => (v.includes("@") ? v : `${v.toLowerCase()}@dommafood.local`);
+
 export default function LoginPage() {
   const { store, user } = useApp();
   const router = useRouter();
@@ -17,7 +20,7 @@ export default function LoginPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true); setError("");
-    try { await store.signIn(email.trim(), password); } catch (err) { setError((err as Error).message); } finally { setBusy(false); }
+    try { await store.signIn(toEmail(email.trim()), password); } catch (err) { setError((err as Error).message); } finally { setBusy(false); }
   };
 
   return (
@@ -25,8 +28,8 @@ export default function LoginPage() {
       <h1>Preço certo no iFood, sem prejuízo.</h1>
       <p className="muted" style={{ margin: 0 }}>Calcule em segundos quanto cobrar em cada item no iFood, Keeta, 99Food e aiqfome.</p>
       <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <label className="field">E-mail
-          <input className="input" type="email" autoComplete="email" required placeholder="voce@restaurante.com.br" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label className="field">E-mail ou usuário
+          <input className="input" type="text" inputMode="email" autoCapitalize="none" autoComplete="username" required placeholder="voce@restaurante.com.br" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <label className="field">Senha
           <input className="input" type="password" autoComplete="current-password" required={store.mode !== "demo"} placeholder="Sua senha" value={password} onChange={(e) => setPassword(e.target.value)} />
